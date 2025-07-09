@@ -1,47 +1,34 @@
+// ✅ login.js (updated)
 document.getElementById("loginForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const role = document.getElementById("role").value;
-  const email = document.getElementById("email").value.trim();
+  const email = document.getElementById("email").value.trim().toLowerCase();
   const password = document.getElementById("password").value.trim();
-  const msg = document.getElementById("msg");
+  const selectedRole = document.getElementById("roleSelect").value.toLowerCase();
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
-  if (!role) {
-    msg.textContent = "Please select a login role.";
-    return;
+  // Predefined admin
+  if (email === "admin@gmail.com" && password === "123456" && selectedRole === "admin") {
+    const admin = { name: "Admin", email, role: "admin" };
+    localStorage.setItem("loggedInUser", JSON.stringify(admin));
+    return window.location.href = "admin.html";
   }
 
-  // Admin Login
-  if (role === "admin") {
-    if (email === "admin@gmail.com" && password === "123456") {
-      msg.style.color = "green";
-      msg.textContent = "Admin login successful!";
-      setTimeout(() => {
-        window.location.href = "admin-dashboard.html"; // Admin Dashboard
-      }, 1000);
-    } else {
-      msg.textContent = "Invalid admin credentials.";
-    }
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) {
+    return alert("Invalid credentials.");
   }
 
-  // Employee Login
-  else if (role === "employee") {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (user) {
-      msg.style.color = "green";
-      msg.textContent = "Employee login successful!";
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
-      setTimeout(() => {
-        window.location.href = "Edash.html"; // ✅ Employee Dashboard
-      }, 1000);
-    } else {
-      msg.textContent = "Invalid employee credentials.";
-    }
+  if ((user.role || "").toLowerCase() !== selectedRole) {
+    return alert("You selected the wrong login type.");
   }
 
-  // Clear fields after attempt
-  document.getElementById("email").value = "";
-  document.getElementById("password").value = "";
+  localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+  if (selectedRole === "admin") {
+    window.location.href = "admin.html";
+  } else {
+    window.location.href = "Edash.html";
+  }
 });
