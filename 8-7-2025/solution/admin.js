@@ -23,15 +23,15 @@ function renderTable() {
 
   pageData.forEach((emp) => {
     const tr = document.createElement("tr");
-    const isAlreadyAdmin = emp.role === "admin";
+    const isAdmin = emp.role === "admin";
     tr.innerHTML = `
       <td>${emp.name}</td>
       <td>${emp.email}</td>
       <td>${emp.employeeId || "Not Set"}</td>
       <td>
-        ${isAlreadyAdmin
-          ? "<span class='text-success'>Admin</span>"
-          : `<button class="btn btn-sm btn-primary" onclick="makeAdmin('${emp.email}')">Make Admin</button>`}
+        <button class="btn btn-sm ${isAdmin ? 'btn-danger' : 'btn-primary'}" onclick="toggleRole('${emp.email}')">
+          ${isAdmin ? 'Depromote to Employee' : 'Promote to Admin'}
+        </button>
       </td>
     `;
     tbody.appendChild(tr);
@@ -82,11 +82,18 @@ function goBack() {
   window.location.href = "login.html";
 }
 
-function makeAdmin(email) {
+// ✅ Toggle admin/employee roles
+function toggleRole(email) {
   const users = JSON.parse(localStorage.getItem("users")) || [];
   const updatedUsers = users.map(user => {
-    if (user.email === email && user.role !== "admin") {
-      user.role = "admin";
+    if (user.email === email) {
+      if (user.role === "admin") {
+        user.role = "employee";
+        alert(`${user.name} has been depromoted to Employee.`);
+      } else {
+        user.role = "admin";
+        alert(`${user.name} has been promoted to Admin.`);
+      }
     }
     return user;
   });
