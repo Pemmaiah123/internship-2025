@@ -1,0 +1,12 @@
+[
+  { "question": "What is your name?", "answer": "I am your chatbot." },
+  { "question": "How are you?", "answer": "I'm just code, but thanks for asking!" },
+  { "question": "What is JavaScript?", "answer": "JavaScript is a programming language for web development." },
+  { "question": "Who made you?", "answer": "I was created by a developer just like you." },
+  { "question": "What can you do?", "answer": "I can answer simple questions from my database." },
+  { "question": "What is HTML?", "answer": "HTML stands for HyperText Markup Language." },
+  { "question": "What is Bootstrap?", "answer": "Bootstrap is a CSS framework for creating responsive websites." },
+  { "question": "How do I contact support?", "answer": "You can email support@example.com." },
+  { "question": "What is AI?", "answer": "AI stands for Artificial Intelligence." },
+  { "question": "Where can I learn coding?", "answer": "There are many free resources online to learn coding!" }
+]
