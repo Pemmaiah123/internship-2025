@@ -1,19 +1,14 @@
+
 import React, { useState } from "react";
 import {
   Box,
-  Button,
-  Container,
-  IconButton,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-  Stack,
-  Paper,
+  CssBaseline,
+  Grid,
+  Typography
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DoneIcon from "@mui/icons-material/Done";
+import NoteList from "./components/NoteList";
+import NoteEditor from "./components/NoteEditor";
+import NavBar from "./components/NavBar";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -22,21 +17,17 @@ const App = () => {
 
   const handleNewNote = () => {
     if (currentNote.trim()) {
+      const timestamp = new Date().toLocaleString();
       if (selectedNoteIndex !== null) {
         const updated = [...notes];
-        updated[selectedNoteIndex] = currentNote;
+        updated[selectedNoteIndex] = { text: currentNote, time: timestamp };
         setNotes(updated);
       } else {
-        setNotes([...notes, currentNote]);
+        setNotes([...notes, { text: currentNote, time: timestamp }]);
       }
     }
     setCurrentNote("");
     setSelectedNoteIndex(null);
-  };
-
-  const handleSelectNote = (index) => {
-    setSelectedNoteIndex(index);
-    setCurrentNote(notes[index]);
   };
 
   const handleDeleteNote = () => {
@@ -44,108 +35,39 @@ const App = () => {
       const updated = [...notes];
       updated.splice(selectedNoteIndex, 1);
       setNotes(updated);
-      setSelectedNoteIndex(null);
       setCurrentNote("");
+      setSelectedNoteIndex(null);
     }
   };
 
-  const handleDone = () => {
-    setSelectedNoteIndex(null);
-    setCurrentNote("");
+  const handleSelectNote = (index) => {
+    setSelectedNoteIndex(index);
+    setCurrentNote(notes[index].text);
   };
 
   return (
-    <Container maxWidth="xl"  sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ display: "flex", height: "100vh" }}>
-        {/* Left Sidebar */}
-        <Box
-          sx={{
-            width: "25%",
-            borderRight: "1px solid #ccc",
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Typography>notes app </Typography>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleNewNote}
-            fullWidth
-          >
-            New 
-          </Button>
-
-          <List sx={{ mt: 2, overflowY: "auto", flexGrow: 1 }}>
-            {notes.map((note, index) => (
-              <ListItem
-                key={index}
-                button
-                onClick={() => handleSelectNote(index)}
-                sx={{
-                  mb: 1,
-                  bgcolor:
-                    index === selectedNoteIndex ? "#238794ff" : "transparent",
-                  borderRadius: 1,
-                }}
-              >
-                <Typography
-                  noWrap
-                  sx={{ fontSize: "0.9rem", color: "#333", maxWidth: "100%" }}
-                >
-                  {note}
-                </Typography>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-
-        {/* Right Editor Panel */}
-        <Box sx={{ flexGrow: 1, p: 3, position: "relative" }}>
-          {/* Top-right actions */}
-          <Stack
-            direction="row"
-            spacing={1}
-            justifyContent="flex-end"
-            sx={{ mb: 2 }}
-          >
-            <IconButton
-              color="success"
-              onClick={handleDone}
-              disabled={currentNote.trim() === ""}
-            >
-              <DoneIcon />
-            </IconButton>
-            <IconButton
-              color="error"
-              onClick={handleDeleteNote}
-              disabled={selectedNoteIndex === null}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-
-          {/* Editor */}
-          <TextField
-            fullWidth
-            multiline
-            minRows={15}
-            maxRows={30}
-            placeholder="Type your note here..."
-            variant="outlined"
-            value={currentNote}
-            onChange={(e) => setCurrentNote(e.target.value)}
-            sx={{
-              fontSize: "1.2rem",
-              "& .MuiInputBase-root": {
-                alignItems: "start",
-              },
-            }}
+    <>
+      <CssBaseline />
+      <NavBar /> 
+      <Grid container sx={{ height: "calc(100vh - 64px)" }}>
+        {/* Adjust height to account for navbar */}
+        <Grid item xs={12} md={3}>
+          <NoteList
+            notes={notes}
+            onNewNote={handleNewNote}
+            onSelectNote={handleSelectNote}
           />
-        </Box>
-      </Paper>
-    </Container>
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <NoteEditor
+            currentNote={currentNote}
+            onChange={setCurrentNote}
+            onSave={handleNewNote}
+            onDelete={handleDeleteNote}
+          />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
