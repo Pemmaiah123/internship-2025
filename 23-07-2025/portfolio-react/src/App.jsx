@@ -12,8 +12,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const App = () => {
-  const [count, setCount] = useState(0);
-  const didIt = "";
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
