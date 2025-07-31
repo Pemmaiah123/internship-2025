@@ -1,37 +1,29 @@
-import React from 'react';
+import React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Typography from "@mui/material/Typography";
 
-const Navbar = ({ onToggleSidebar, showHamburger }) => {
-    return (
-        <nav style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '10px 20px',
-            backgroundColor: '#333',
-            color: 'white',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            zIndex: 100 // THIS wwill ensure navbar is above sidebar on mobile
-        }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                {showHamburger && ( // Only show hamburger if showHamburger prop is true
-                    <button
-                        onClick={onToggleSidebar}
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            color: 'white',
-                            fontSize: '24px',
-                            cursor: 'pointer',
-                            marginRight: '15px',
-                        }}
-                    >
-                        ☰
-                    </button>
-                )}
-                <span   style={{ fontSize: '20px', fontWeight: 'bold', }}>Notes App</span>
-            </div>
-        </nav>
-    );
-};
+const Navbar = ({ onToggleSidebar, showHamburger }) => (
+  <AppBar position="fixed" sx={{ zIndex: 1300 }}>
+    <Toolbar>
+      {showHamburger && (
+        <IconButton
+          color="inherit"
+          edge="start"
+          onClick={onToggleSidebar}
+          sx={{ mr: 2 }}
+          aria-label="open sidebar"
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+      <Typography variant="h6" noWrap>
+        Notes App
+      </Typography>
+    </Toolbar>
+  </AppBar>
+);
 
 export default Navbar;
