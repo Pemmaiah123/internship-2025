@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employee Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1f5261, #3477c9);
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+    .container {
+      padding: 20px;
+    }
+    .info-card {
+      max-width: 500px;
+      padding: 20px;
+    }
+    @media (max-width: 576px) {
+      .info-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 id="welcomeText">Welcome, Employee</h2>
+      <div>
+        <button class="btn btn-secondary me-2" onclick="goBack()">Back</button>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <!-- Logged-in employee info -->
+    <div class="card border-info mb-4 info-card">
+      <div class="card-body">
+        <h5 class="card-title">Your Information</h5>
+        <p class="card-text"><strong>Name:</strong> <span id="empName"></span></p>
+        <p class="card-text"><strong>Email:</strong> <span id="empEmail"></span></p>
+        <p class="card-text">
+          <strong>Employee ID:</strong>
+          <span id="empID">Not set</span>
+          <div id="idActions" class="mt-2">
+            <button class="btn btn-sm btn-outline-primary me-2" onclick="generateID()">Auto Generate ID</button>
+            <input type="text" id="manualID" placeholder="Enter ID (e.g. EMP005)" class="form-control d-inline-block w-auto" />
+            <button class="btn btn-sm btn-success mt-2" onclick="setManualID()">Set ID</button>
+          </div>
+        </p>
+      </div>
+    </div>
+
+    <!-- Search employees -->
+    <div class="mb-3">
+      <input type="text" class="form-control" id="searchInput" placeholder="Search employees by Name, Email, or ID" onkeyup="filterTable()" />
+    </div>
+
+    <!-- Employee Table -->
+    <div class="table-responsive mb-3">
+      <table class="table table-bordered table-striped" id="employeeTable">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Employee ID</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+      <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
+  </div>
+
+  <script src="Edash.js"></script>
+</body>
+</html>
